@@ -16,13 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Hash password securely
     $password_hashed = password_hash($password, PASSWORD_DEFAULT);
 
-    // Default status for new users
-    $status = "1";
-
-    // Insert into users table
-    $sql = "INSERT INTO users (name, email, password, status) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $username, $email, $password_hashed, $status);
+    $stmt->bind_param("sss", $username, $email, $password_hashed);
 
     if ($stmt->execute()) {
         echo "🎉 Registration successful! You can now <a href='login.php'>login</a>";
