@@ -1,5 +1,5 @@
 <?php
-$servername = "13.213.14.97";
+$servername = "18.143.120.77/"; 
 $db_username = "admin";
 $db_password = "P@ssword";
 $db_name = "intruderSystem";
