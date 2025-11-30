@@ -1,7 +1,7 @@
 <?php
-$servername = "98.93.82.44";
-$db_username = "phpadmin";
-$db_password = "StrongPassword123";
+$servername = "13.213.14.97";
+$db_username = "admin";
+$db_password = "P@ssword";
 $db_name = "intruderSystem";
 $port = 3306;
 
