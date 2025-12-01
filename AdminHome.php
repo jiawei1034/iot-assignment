@@ -311,7 +311,7 @@ $notifications_json = json_encode($notifications);
 .notif-item {
     display: flex;
     align-items: center;
-    background: #F8FBF8;
+    background: #ffffff;
     padding: 10px 6px;
     border-radius: 10px;
     cursor: pointer;
@@ -319,14 +319,14 @@ $notifications_json = json_encode($notifications);
 }
 
 .notif-item:hover {
-    background: #eed9d0ff;
+    background: #f5f5f5;
 }
 
 .notif-icon {
     width: 42px;
     height: 42px;
     border-radius: 12px;
-    background: #ced6f0ff;
+    background: #eef2ff;
     color: #374151;
     display: flex;
     align-items: center;
