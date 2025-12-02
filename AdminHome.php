@@ -1,4 +1,6 @@
 <?php
+include 'config.php';
+session_start();
 // admin_home.php
 // Frontend mockup for Admin Home Page using hardcoded data based on the user's DB schema.
 // - Uses Chart.js for charts
@@ -8,67 +10,67 @@
 // - Side nav: Overview, Logs
 
 // -------------------------
-// Hardcoded sample data (replace with DB queries later)
+// Fetch data from DB
 // -------------------------
+
+// Check if user is logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: index.php");
+    exit;
+}
+
+date_default_timezone_set('Asia/Kuala_Lumpur');
+
+$profile_name = $_SESSION['username'];
 $now = new DateTime('now');
 $login_timestamp = $now->format('Y-m-d H:i:s');
-$profile_name = 'Admin User';
-$logo_text = 'IntruderSys';
 
-// Devices sample (device_id, event_id, name, status)
-$devices = [
-    ['device_id'=>1, 'event_id'=>1, 'name'=>'LED Zone A', 'status'=>1],
-    ['device_id'=>2, 'event_id'=>1, 'name'=>'Buzzer Zone A', 'status'=>1],
-    ['device_id'=>3, 'event_id'=>2, 'name'=>'PIR Motion A', 'status'=>1],
-    ['device_id'=>4, 'event_id'=>3, 'name'=>'Shock Sensor A', 'status'=>1],
-];
+// profile info
+// $stmt = $conn->query("SELECT name FROM users");
 
-// Alarm table sample (alarm_id, device_id, is_triggered, datetime)
-$alarms = [
-    ['alarm_id'=>1, 'device_id'=>1, 'is_triggered'=>1, 'datetime'=>'2025-11-28 09:12:00'],
-    ['alarm_id'=>2, 'device_id'=>2, 'is_triggered'=>1, 'datetime'=>'2025-11-28 09:12:10'],
-    ['alarm_id'=>3, 'device_id'=>1, 'is_triggered'=>0, 'datetime'=>'2025-11-29 10:00:00'],
-    ['alarm_id'=>4, 'device_id'=>2, 'is_triggered'=>0, 'datetime'=>'2025-11-29 10:00:10'],
-    ['alarm_id'=>5, 'device_id'=>1, 'is_triggered'=>1, 'datetime'=>'2025-11-30 11:22:00'],
-];
+// $profile_name = 'Admin User';
+// $logo_text = 'IntruderSys';
 
-// Motion sensor sample (motion_id, device_id, is_detected, datetime)
-$motions = [
-    ['motion_id'=>1, 'device_id'=>3, 'is_detected'=>0, 'datetime'=>'2025-11-28 08:00:00'],
-    ['motion_id'=>2, 'device_id'=>3, 'is_detected'=>1, 'datetime'=>'2025-11-28 08:35:12'],
-    ['motion_id'=>3, 'device_id'=>3, 'is_detected'=>0, 'datetime'=>'2025-11-29 14:00:00'],
-    ['motion_id'=>4, 'device_id'=>3, 'is_detected'=>1, 'datetime'=>'2025-11-30 16:12:45'],
-];
+// Devices
+$stmt = $conn->query("SELECT device_id, event_id, name, status FROM device_list");
+$devices = $stmt->fetch_all(MYSQLI_ASSOC);
 
-// Shock sensor sample (shock_id, device_id, is_detected, datetime)
-$shocks = [
-    ['shock_id'=>1, 'device_id'=>4, 'is_detected'=>0, 'datetime'=>'2025-11-28 07:23:00'],
-    ['shock_id'=>2, 'device_id'=>4, 'is_detected'=>1, 'datetime'=>'2025-11-29 20:05:10'],
-    ['shock_id'=>3, 'device_id'=>4, 'is_detected'=>0, 'datetime'=>'2025-11-30 09:15:00'],
-];
+// Alarms
+$stmt = $conn->query("SELECT alarm_id, device_id, is_triggered, datetime FROM alarm ORDER BY datetime DESC");
+$alarms = $stmt->fetch_all(MYSQLI_ASSOC);
 
-// Notifications sample (notification_id, user_id, username, message, created_at)
-$notifications = [
-    ['notification_id'=>1, 'user_id'=>1, 'username'=>'system', 'message'=>'Alarm triggered at Zone A', 'created_at'=>'2025-11-28 09:12:12'],
-    ['notification_id'=>2, 'user_id'=>2, 'username'=>'guard1', 'message'=>'Motion detected near gate', 'created_at'=>'2025-11-30 16:13:00'],
-    ['notification_id'=>3, 'user_id'=>1, 'username'=>'system', 'message'=>'Device LED Zone A offline', 'created_at'=>'2025-11-29 10:05:00'],
-];
+// Motion sensors
+$stmt = $conn->query("SELECT motion_id, device_id, is_detected, datetime FROM motion_sensor ORDER BY datetime DESC");
+$motions = $stmt->fetch_all(MYSQLI_ASSOC);
 
-// Summary boxes (counts). For demo we compute simple counts.
+// Shock sensors
+$stmt = $conn->query("SELECT shock_id, device_id, is_detected, datetime FROM shock_sensor ORDER BY datetime DESC");
+$shocks = $stmt->fetch_all(MYSQLI_ASSOC);
+
+// Notifications (latest 20)
+$stmt = $conn->query("SELECT notification_id, user_id, username, message, created_at FROM notification ORDER BY created_at DESC LIMIT 20");
+$notifications = $stmt->fetch_all(MYSQLI_ASSOC);
+
+// -------------------------
+// Summary counts
+// -------------------------
+$total_devices = count($devices);
+$total_alarms = count(array_filter($alarms, fn($a)=> $a['is_triggered']==1));
+$motions_detected = count(array_filter($motions, fn($m)=> $m['is_detected']==1));
+$shocks_detected = count(array_filter($shocks, fn($s)=> $s['is_detected']==1));
+
 $summary = [
-    'total_devices' => count($devices),
-    'total_alarms' => count(array_filter($alarms, fn($a)=> $a['is_triggered']==1)),
-    'motions_detected' => count(array_filter($motions, fn($m)=> $m['is_detected']==1)),
-    'shocks_detected' => count(array_filter($shocks, fn($s)=> $s['is_detected']==1)),
+    'total_devices' => $total_devices,
+    'total_alarms' => $total_alarms,
+    'motions_detected' => $motions_detected,
+    'shocks_detected' => $shocks_detected
 ];
-$online = 0;
-$offline = 0;
-$faulty = 0;
 
+$online = $offline = $faulty = 0;
 foreach ($devices as $d) {
     if ($d['status'] == 1) $online++;
     if ($d['status'] == 0) $offline++;
-    if ($d['status'] == 2) $faulty++; // if you use status=2 as faulty
+    if ($d['status'] == 2) $faulty++;
 }
 
 $dailyEvents = [];
@@ -410,11 +412,15 @@ $notifications_json = json_encode($notifications);
     </div>
 
     <ul class="nav-section">
-        <li class="active"><img src="icons/overview.svg" class="icon"> Overview</li>
-        <li><img src="icons/event.svg" class="icon"> Logs/Events</li>
+        <li class="active">Overview</li>
+        <li>Logs/Events</li>
     </ul>
-
+    <!-- Logout button -->
+    <div style="position:absolute; bottom:20px; width:100%; text-align:center;">
+      <a href="index.php" class="btn btn-danger w-75">Logout</a>
+    </div>
 </div>
+
 <!-- TOPBAR -->
 <div class="topbar">
     <div style="display:flex;align-items:center;gap:12px">
@@ -430,7 +436,7 @@ $notifications_json = json_encode($notifications);
         <div style="font-weight:600"><?=htmlspecialchars($login_timestamp)?></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:40px;height:40px;border-radius:50%;background:#efefef;display:flex;align-items:center;justify-content:center"><img src="icons/account.svg" class="icon"></div>
+        <div style="width:40px;height:40px;border-radius:50%;background:#efefef;display:flex;align-items:center;justify-content:center"></div>
         <div><?=htmlspecialchars($profile_name)?></div>
       </div>
     </div>
