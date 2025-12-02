@@ -412,8 +412,8 @@ $notifications_json = json_encode($notifications);
     </div>
 
     <ul class="nav-section">
-        <li class="active"><img src="icons/overview.svg" class="icon"> Overview</li>
-        <li><img src="icons/event.svg" class="icon"> Logs/Events</li>
+        <li class="active">Overview</li>
+        <li>Logs/Events</li>
     </ul>
     <!-- Logout button -->
     <div style="position:absolute; bottom:20px; width:100%; text-align:center;">
@@ -436,7 +436,7 @@ $notifications_json = json_encode($notifications);
         <div style="font-weight:600"><?=htmlspecialchars($login_timestamp)?></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:40px;height:40px;border-radius:50%;background:#efefef;display:flex;align-items:center;justify-content:center"><img src="icons/account.svg" class="icon"></div>
+        <div style="width:40px;height:40px;border-radius:50%;background:#efefef;display:flex;align-items:center;justify-content:center"></div>
         <div><?=htmlspecialchars($profile_name)?></div>
       </div>
     </div>
