@@ -12,23 +12,31 @@ switch ($method) {
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (
-            isset($data['motion_id']) &&
             isset($data['device_id']) &&
             isset($data['is_detected']) &&
             isset($data['date_time'])
         ) {
-            $motion_id   = (int)$data['motion_id'];
-            $device_id   = $data['device_id'];
+            $device_id   = (int)$data['device_id'];
             $is_detected = (int)$data['is_detected'];
-            $detected_at = $data['date_time'];
+            $date_time   = $data['date_time'];
 
+            // motion_id is AUTO_INCREMENT → do NOT insert it
             $stmt = $conn->prepare(
-                "INSERT INTO motion_sensor (motion_id, device_id, is_detected, date_time)
-                 VALUES (?, ?, ?, ?)"
+                "INSERT INTO motion_sensor (device_id, is_detected, date_time)
+                 VALUES (?, ?, ?)"
             );
+
+            if (!$stmt) {
+                http_response_code(500);
+                echo json_encode([
+                    "status" => "error",
+                    "message" => $conn->error
+                ]);
+                exit;
+            }
+
             $stmt->bind_param(
-                "isis",
-                $motion_id,
+                "iis",
                 $device_id,
                 $is_detected,
                 $date_time
@@ -38,15 +46,16 @@ switch ($method) {
                 http_response_code(201);
                 echo json_encode([
                     "status" => "success",
-                    "message" => "Motion data inserted successfully"
+                    "motion_id" => $stmt->insert_id
                 ]);
             } else {
                 http_response_code(500);
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Failed to insert data"
+                    "message" => $stmt->error
                 ]);
             }
+
             $stmt->close();
 
         } else {
@@ -61,7 +70,7 @@ switch ($method) {
     // ================== GET ==================
     case 'GET':
         $result = $conn->query(
-            "SELECT * FROM motion_sensor ORDER BY datetime DESC"
+            "SELECT * FROM motion_sensor ORDER BY date_time DESC"
         );
 
         $data = [];
