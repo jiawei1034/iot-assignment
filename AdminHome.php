@@ -413,7 +413,7 @@ $notifications_json = json_encode($notifications);
 
     <ul class="nav-section">
         <li class="active">Overview</li>
-        <li>Logs/Events</li>
+        <li><a href="Logs.php" style="text-decoration: none; color: black;">Logs/Events</a></li>
     </ul>
     <!-- Logout button -->
     <div style="position:absolute; bottom:20px; width:100%; text-align:center;">
@@ -887,3 +887,4 @@ new Chart(document.getElementById("dailyEventBar"), {
 
 </body>
 </html>
+
