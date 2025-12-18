@@ -1,4 +1,7 @@
 <?php
+// ================== TIMEZONE ==================
+date_default_timezone_set('Asia/Kuala_Lumpur'); // CHANGE IF NEEDED
+
 // ================== ERROR REPORTING (DEBUG) ==================
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -8,7 +11,7 @@ error_reporting(E_ALL);
 header("Content-Type: application/json");
 
 // ================== DATABASE CONFIG ==================
-$servername  = "localhost";        // IMPORTANT: localhost
+$servername  = "localhost";
 $db_username = "admin";
 $db_password = "P@ssword";
 $db_name     = "intruderSystem";
@@ -26,6 +29,9 @@ if ($conn->connect_error) {
     exit;
 }
 
+// ✅ Force MySQL timezone to match PHP
+$conn->query("SET time_zone = '+08:00'");
+
 // ================== HTTP METHOD ==================
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -42,10 +48,12 @@ switch ($method) {
             $device_id   = (int)$data['device_id'];
             $is_detected = (int)$data['is_detected'];
 
-            // motion_id is AUTO_INCREMENT, date_time is generated automatically
+            // ✅ PHP-generated local datetime
+            $date_time = date('Y-m-d H:i:s');
+
             $stmt = $conn->prepare(
                 "INSERT INTO motion_sensor (device_id, is_detected, date_time)
-                 VALUES (?, ?, NOW())"
+                 VALUES (?, ?, ?)"
             );
 
             if (!$stmt) {
@@ -57,13 +65,14 @@ switch ($method) {
                 exit;
             }
 
-            $stmt->bind_param("ii", $device_id, $is_detected);
+            $stmt->bind_param("iis", $device_id, $is_detected, $date_time);
 
             if ($stmt->execute()) {
                 http_response_code(201);
                 echo json_encode([
                     "status" => "success",
-                    "motion_id" => $stmt->insert_id
+                    "motion_id" => $stmt->insert_id,
+                    "date_time" => $date_time
                 ]);
             } else {
                 http_response_code(500);
