@@ -22,7 +22,7 @@ if (!isset($_SESSION['username'])) {
 date_default_timezone_set('Asia/Kuala_Lumpur');
 
 $profile_name = $_SESSION['username'];
-$now = new DateTime('now');
+$now = new datetime('now');
 $login_timestamp = $now->format('Y-m-d H:i:s');
 
 // profile info
@@ -36,15 +36,15 @@ $stmt = $conn->query("SELECT device_id, event_id, name, status FROM device_list"
 $devices = $stmt->fetch_all(MYSQLI_ASSOC);
 
 // Alarms
-$stmt = $conn->query("SELECT alarm_id, device_id, is_triggered, datetime FROM alarm ORDER BY datetime DESC");
+$stmt = $conn->query("SELECT alarm_id, device_id, is_triggered, date_time FROM alarm ORDER BY date_time DESC");
 $alarms = $stmt->fetch_all(MYSQLI_ASSOC);
 
 // Motion sensors
-$stmt = $conn->query("SELECT motion_id, device_id, is_detected, datetime FROM motion_sensor ORDER BY datetime DESC");
+$stmt = $conn->query("SELECT motion_id, device_id, is_detected, date_time FROM motion_sensor ORDER BY date_time DESC");
 $motions = $stmt->fetch_all(MYSQLI_ASSOC);
 
 // Shock sensors
-$stmt = $conn->query("SELECT shock_id, device_id, is_detected, datetime FROM shock_sensor ORDER BY datetime DESC");
+$stmt = $conn->query("SELECT shock_id, device_id, is_detected, date_time FROM shock_sensor ORDER BY date_time DESC");
 $shocks = $stmt->fetch_all(MYSQLI_ASSOC);
 
 // Notifications (latest 20)
@@ -78,7 +78,7 @@ $dailyEvents = [];
 $mergeArrays = array_merge($alarms, $motions, $shocks);
 
 foreach ($mergeArrays as $row) {
-    $day = date("Y-m-d", strtotime($row['datetime']));
+    $day = date("Y-m-d", strtotime($row['date_time']));
     if (!isset($dailyEvents[$day])) $dailyEvents[$day] = 0;
 
     // count only triggered/detected ones
@@ -94,7 +94,7 @@ $eventValues = array_values($dailyEvents);
 
 
 // Utility: generate time series labels for selected range
-function generate_time_labels(DateTime $from, DateTime $to, $rangeType){
+function generate_time_labels(datetime $from, datetime $to, $rangeType){
     $labels = [];
     $current = clone $from;
     switch($rangeType){
@@ -126,7 +126,7 @@ function generate_time_labels(DateTime $from, DateTime $to, $rangeType){
 
 // Prepare default range: last 7 days
 $rangeType = $_GET['range'] ?? 'week'; // day | week | month
-$end = new DateTime();
+$end = new datetime();
 $start = (clone $end)->modify('-6 days');
 if($rangeType === 'day'){
     $start = (clone $end)->modify('-23 hours');
@@ -137,7 +137,7 @@ if($rangeType === 'month'){
 $labels = generate_time_labels($start, $end, $rangeType);
 
 // Helper to map events to labels
-function map_events_to_series($labels, $events, $fieldName, $datetimeField='datetime', $valueWhenTrue=1){
+function map_events_to_series($labels, $events, $fieldName, $date_timeField='date_time', $valueWhenTrue=1){
     // Initialize series with zeros
     $series = array_fill(0, count($labels), 0);
     // Create label -> index map
@@ -145,7 +145,7 @@ function map_events_to_series($labels, $events, $fieldName, $datetimeField='date
     foreach($labels as $i=>$label){ $labelMap[$label] = $i; }
 
     foreach($events as $e){
-        $dt = new DateTime($e[$datetimeField]);
+        $dt = new datetime($e[$date_timeField]);
         // Format to match label granularity
         global $rangeType;
         if($rangeType === 'day'){
@@ -180,21 +180,21 @@ function addEventDay(&$arr, $date)
 // Alarm events
 foreach ($alarms as $a) {
     if ($a["is_triggered"] == 1) {
-        addEventDay($dailyEvents, $a["datetime"]);
+        addEventDay($dailyEvents, $a["date_time"]);
     }
 }
 
 // Motion events
 foreach ($motions as $m) {
     if ($m["is_detected"] == 1) {
-        addEventDay($dailyEvents, $m["datetime"]);
+        addEventDay($dailyEvents, $m["date_time"]);
     }
 }
 
 // Shock events
 foreach ($shocks as $s) {
     if ($s["is_detected"] == 1) {
-        addEventDay($dailyEvents, $s["datetime"]);
+        addEventDay($dailyEvents, $s["date_time"]);
     }
 }
 $days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
@@ -505,7 +505,7 @@ $notifications_json = json_encode($notifications);
           <div class="table-responsive">
             <table class="table table-sm">
               <thead>
-                <tr><th>Type</th><th>Device</th><th>Datetime</th><th>State</th></tr>
+                <tr><th>Type</th><th>Device</th><th>date_time</th><th>State</th></tr>
               </thead>
               <tbody>
                 <?php foreach($alarms as $a):
@@ -514,7 +514,7 @@ $notifications_json = json_encode($notifications);
                   <tr>
                     <td>Alarm</td>
                     <td><?=htmlspecialchars($dev['name'])?></td>
-                    <td><?=htmlspecialchars($a['datetime'])?></td>
+                    <td><?=htmlspecialchars($a['date_time'])?></td>
                     <td><?= $a['is_triggered'] ? 'TRIGGERED' : 'OK' ?></td>
                   </tr>
                 <?php endforeach; ?>
@@ -523,7 +523,7 @@ $notifications_json = json_encode($notifications);
                   <tr>
                     <td>Motion</td>
                     <td><?=htmlspecialchars($dev['name'])?></td>
-                    <td><?=htmlspecialchars($m['datetime'])?></td>
+                    <td><?=htmlspecialchars($m['date_time'])?></td>
                     <td><?= $m['is_detected'] ? 'DETECTED' : 'CLEAR' ?></td>
                   </tr>
                 <?php endforeach; ?>
@@ -532,7 +532,7 @@ $notifications_json = json_encode($notifications);
                   <tr>
                     <td>Shock</td>
                     <td><?=htmlspecialchars($dev['name'])?></td>
-                    <td><?=htmlspecialchars($s['datetime'])?></td>
+                    <td><?=htmlspecialchars($s['date_time'])?></td>
                     <td><?= $s['is_detected'] ? 'DETECTED' : 'CLEAR' ?></td>
                   </tr>
                 <?php endforeach; ?>
