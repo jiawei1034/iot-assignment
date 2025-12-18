@@ -1,8 +1,32 @@
 <?php
-include 'config.php';
+// ================== ERROR REPORTING (DEBUG) ==================
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// ================== HEADERS ==================
 header("Content-Type: application/json");
 
-// ===== HTTP METHOD =====
+// ================== DATABASE CONFIG ==================
+$servername  = "localhost";        // IMPORTANT: localhost
+$db_username = "admin";
+$db_password = "P@ssword";
+$db_name     = "intruderSystem";
+$port        = 3306;
+
+// ================== DATABASE CONNECTION ==================
+$conn = new mysqli($servername, $db_username, $db_password, $db_name, $port);
+
+if ($conn->connect_error) {
+    http_response_code(500);
+    echo json_encode([
+        "status" => "error",
+        "message" => "DB connection failed: " . $conn->connect_error
+    ]);
+    exit;
+}
+
+// ================== HTTP METHOD ==================
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
@@ -20,7 +44,7 @@ switch ($method) {
             $is_detected = (int)$data['is_detected'];
             $date_time   = $data['date_time'];
 
-            // motion_id is AUTO_INCREMENT → do NOT insert it
+            // motion_id is AUTO_INCREMENT → do NOT insert
             $stmt = $conn->prepare(
                 "INSERT INTO motion_sensor (device_id, is_detected, date_time)
                  VALUES (?, ?, ?)"
@@ -35,12 +59,7 @@ switch ($method) {
                 exit;
             }
 
-            $stmt->bind_param(
-                "iis",
-                $device_id,
-                $is_detected,
-                $date_time
-            );
+            $stmt->bind_param("iis", $device_id, $is_detected, $date_time);
 
             if ($stmt->execute()) {
                 http_response_code(201);
@@ -73,6 +92,15 @@ switch ($method) {
             "SELECT * FROM motion_sensor ORDER BY date_time DESC"
         );
 
+        if (!$result) {
+            http_response_code(500);
+            echo json_encode([
+                "status" => "error",
+                "message" => $conn->error
+            ]);
+            exit;
+        }
+
         $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
@@ -95,5 +123,6 @@ switch ($method) {
         break;
 }
 
+// ================== CLOSE CONNECTION ==================
 $conn->close();
 ?>
