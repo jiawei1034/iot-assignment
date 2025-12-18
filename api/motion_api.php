@@ -37,17 +37,15 @@ switch ($method) {
 
         if (
             isset($data['device_id']) &&
-            isset($data['is_detected']) &&
-            isset($data['date_time'])
+            isset($data['is_detected'])
         ) {
             $device_id   = (int)$data['device_id'];
             $is_detected = (int)$data['is_detected'];
-            $date_time   = $data['date_time'];
 
-            // motion_id is AUTO_INCREMENT → do NOT insert
+            // motion_id is AUTO_INCREMENT, date_time is generated automatically
             $stmt = $conn->prepare(
                 "INSERT INTO motion_sensor (device_id, is_detected, date_time)
-                 VALUES (?, ?, ?)"
+                 VALUES (?, ?, NOW())"
             );
 
             if (!$stmt) {
@@ -59,7 +57,7 @@ switch ($method) {
                 exit;
             }
 
-            $stmt->bind_param("iis", $device_id, $is_detected, $date_time);
+            $stmt->bind_param("ii", $device_id, $is_detected);
 
             if ($stmt->execute()) {
                 http_response_code(201);
