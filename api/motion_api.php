@@ -15,15 +15,15 @@ switch ($method) {
             isset($data['motion_id']) &&
             isset($data['device_id']) &&
             isset($data['is_detected']) &&
-            isset($data['detected_at'])
+            isset($data['date_time'])
         ) {
             $motion_id   = (int)$data['motion_id'];
             $device_id   = $data['device_id'];
             $is_detected = (int)$data['is_detected'];
-            $detected_at = $data['detected_at'];
+            $detected_at = $data['date_time'];
 
             $stmt = $conn->prepare(
-                "INSERT INTO motion_sensor (motion_id, device_id, is_detected, datetime)
+                "INSERT INTO motion_sensor (motion_id, device_id, is_detected, date_time)
                  VALUES (?, ?, ?, ?)"
             );
             $stmt->bind_param(
@@ -31,7 +31,7 @@ switch ($method) {
                 $motion_id,
                 $device_id,
                 $is_detected,
-                $datetime
+                $date_time
             );
 
             if ($stmt->execute()) {
