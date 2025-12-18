@@ -23,7 +23,7 @@ switch ($method) {
             $detected_at = $data['detected_at'];
 
             $stmt = $conn->prepare(
-                "INSERT INTO motion_data (motion_id, device_id, is_detected, detected_at)
+                "INSERT INTO motion_sensor (motion_id, device_id, is_detected, datetime)
                  VALUES (?, ?, ?, ?)"
             );
             $stmt->bind_param(
@@ -31,7 +31,7 @@ switch ($method) {
                 $motion_id,
                 $device_id,
                 $is_detected,
-                $detected_at
+                $datetime
             );
 
             if ($stmt->execute()) {
@@ -61,7 +61,7 @@ switch ($method) {
     // ================== GET ==================
     case 'GET':
         $result = $conn->query(
-            "SELECT * FROM motion_data ORDER BY detected_at DESC"
+            "SELECT * FROM motion_sensor ORDER BY datetime DESC"
         );
 
         $data = [];
