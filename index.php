@@ -87,8 +87,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $_SESSION['user_id'] = $user_id;
                 $_SESSION['username'] = $user['name'];
+                $_SESSION['role'] = $user['role'];
 
-                header("Location: AdminHome.php");
+                // Redirect based on role
+                if ($user['role'] == 'super_admin') {
+                    header("Location: SuperAdmin.php");
+                } else {
+                    header("Location: AdminHome.php");
+                }
                 exit;
             } else {
                 // Record failed attempt (1st or 2nd)

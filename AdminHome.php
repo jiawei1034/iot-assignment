@@ -48,7 +48,7 @@ $stmt = $conn->query("SELECT shock_id, device_id, is_detected, date_time FROM sh
 $shocks = $stmt->fetch_all(MYSQLI_ASSOC);
 
 // Notifications (latest 20)
-$stmt = $conn->query("SELECT notification_id, user_id, username, message, created_at FROM notification ORDER BY created_at DESC LIMIT 20");
+$stmt = $conn->query("SELECT notification_id, user_id, username, message, created_at FROM notifications ORDER BY created_at DESC LIMIT 20");
 $notifications = $stmt->fetch_all(MYSQLI_ASSOC);
 
 // -------------------------
