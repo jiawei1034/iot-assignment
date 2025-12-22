@@ -1291,10 +1291,10 @@ function clearAllNotifications() {
                             <h3>Failed Logins (24h)</h3>
                             <div class="number" id="stat-failed-logins">—</div>
                         </div>
-                        <div class="stat-card">
+                        <!-- <div class="stat-card">
                             <h3>System Status</h3>
                             <div class="number" id="stat-status" style="font-size: 18px; padding: 8px 12px; border-radius: 4px; display: inline-block;">—</div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div style="display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; align-items:center;">
@@ -1329,7 +1329,7 @@ function clearAllNotifications() {
                                 <tr>
                                     <th>Time</th>
                                     <th>User</th>
-                                    <th>IP Address</th>
+                                    <!-- <th>IP Address</th> -->
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -1413,7 +1413,7 @@ function clearAllNotifications() {
                                 <tr>
                                     <th>Time</th>
                                     <th>User</th>
-                                    <th>IP Address</th>
+                                    <!-- <th>IP Address</th> -->
                                     <th>Session ID</th>
                                 </tr>
                             </thead>
@@ -1685,12 +1685,12 @@ function clearAllNotifications() {
                     document.getElementById('stat-failed-logins').textContent = stats.failedLogins24h || 0;
                     
                     // System status
-                    const status = await fetchData('system-status');
-                    if (status) {
-                        const statusEl = document.getElementById('stat-status');
-                        statusEl.textContent = status.status;
-                        statusEl.className = status.isOnline ? 'status-online' : 'status-offline';
-                    }
+                    // const status = await fetchData('system-status');
+                    // if (status) {
+                    //     const statusEl = document.getElementById('stat-status');
+                    //     statusEl.textContent = status.status;
+                    //     statusEl.className = status.isOnline ? 'status-online' : 'status-offline';
+                    // }
                     
                     // Update notification badges
                     updateNotificationBadges(stats);
