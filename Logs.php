@@ -40,16 +40,16 @@ $logo_text = 'IntruderSys';
 $devices = $conn->query("SELECT device_id,event_id,name,status FROM device_list")
                 ->fetch_all(MYSQLI_ASSOC);
 
-$alarms = $conn->query("SELECT alarm_id,device_id,is_triggered,datetime 
-                        FROM alarm ORDER BY datetime DESC")
+$alarms = $conn->query("SELECT alarm_id,device_id,is_triggered,date_time 
+                        FROM alarm ORDER BY date_time DESC")
                ->fetch_all(MYSQLI_ASSOC);
 
-$motions = $conn->query("SELECT motion_id,device_id,is_detected,datetime 
-                         FROM motion_sensor ORDER BY datetime DESC")
+$motions = $conn->query("SELECT motion_id,device_id,is_detected,date_time 
+                         FROM motion_sensor ORDER BY date_time DESC")
                 ->fetch_all(MYSQLI_ASSOC);
 
-$shocks = $conn->query("SELECT shock_id,device_id,is_detected,datetime 
-                        FROM shock_sensor ORDER BY datetime DESC")
+$shocks = $conn->query("SELECT shock_id,device_id,is_detected,date_time 
+                        FROM shock_sensor ORDER BY date_time DESC")
                ->fetch_all(MYSQLI_ASSOC);
 
 $notifications = $conn->query("SELECT notification_id,user_id,username,message,created_at 
