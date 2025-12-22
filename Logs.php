@@ -1,70 +1,65 @@
 <?php
-// =========================================================
-// logs.php (UI PREVIEW MODE – NO DATABASE)
-// =========================================================
 
-/*
 // -------------------------
 // DATABASE VERSION (ENABLE LATER)
 // -------------------------
-// session_start();
-// require_once "db.php";
-// if (!isset($_SESSION['username'])) {
-//     header("Location: index.php");
-//     exit;
-// }
-// date_default_timezone_set('Asia/Kuala_Lumpur');
-// $profile_name = $_SESSION['username'];
-// $now = new DateTime('now');
-// $login_timestamp = $now->format('Y-m-d H:i:s');
-// $logo_text = 'IntruderSys';
-//
-// $devices = $conn->query("SELECT device_id,event_id,name,status FROM device_list")->fetch_all(MYSQLI_ASSOC);
-// $alarms = $conn->query("SELECT alarm_id,device_id,is_triggered,datetime FROM alarm ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
-// $motions = $conn->query("SELECT motion_id,device_id,is_detected,datetime FROM motion_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
-// $shocks = $conn->query("SELECT shock_id,device_id,is_detected,datetime FROM shock_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
-// $notifications = $conn->query("SELECT notification_id,user_id,username,message,created_at FROM notification ORDER BY created_at DESC LIMIT 20")->fetch_all(MYSQLI_ASSOC);
-*/
+session_start();
+require_once "config.php";
+if (!isset($_SESSION['username'])) {
+    header("Location: index.php");
+    exit;
+}
+date_default_timezone_set('Asia/Kuala_Lumpur');
+$profile_name = $_SESSION['username'];
+$now = new DateTime('now');
+$login_timestamp = $now->format('Y-m-d H:i:s');
+$logo_text = 'IntruderSys';
+
+$devices = $conn->query("SELECT device_id,event_id,name,status FROM device_list")->fetch_all(MYSQLI_ASSOC);
+$alarms = $conn->query("SELECT alarm_id,device_id,is_triggered,datetime FROM alarm ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
+$motions = $conn->query("SELECT motion_id,device_id,is_detected,datetime FROM motion_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
+$shocks = $conn->query("SELECT shock_id,device_id,is_detected,datetime FROM shock_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
+$notifications = $conn->query("SELECT notification_id,user_id,username,message,created_at FROM notification ORDER BY created_at DESC LIMIT 20")->fetch_all(MYSQLI_ASSOC);
 
 // -------------------------
 // HARDCODED SAMPLE DATA (UI PREVIEW)
 // -------------------------
-$now = new DateTime('now');
-$login_timestamp = $now->format('Y-m-d H:i:s');
-$profile_name = 'Admin User';
-$logo_text = 'IntruderSys';
+// $now = new DateTime('now');
+// $login_timestamp = $now->format('Y-m-d H:i:s');
+// $profile_name = 'Admin User';
+// $logo_text = 'IntruderSys';
 
-$devices = [
-  ['device_id'=>1,'event_id'=>1,'name'=>'LED Zone A','status'=>1],
-  ['device_id'=>2,'event_id'=>1,'name'=>'Buzzer Zone A','status'=>1],
-  ['device_id'=>3,'event_id'=>2,'name'=>'PIR Motion A','status'=>1],
-  ['device_id'=>4,'event_id'=>3,'name'=>'Shock Sensor A','status'=>1],
-];
+// $devices = [
+//   ['device_id'=>1,'event_id'=>1,'name'=>'LED Zone A','status'=>1],
+//   ['device_id'=>2,'event_id'=>1,'name'=>'Buzzer Zone A','status'=>1],
+//   ['device_id'=>3,'event_id'=>2,'name'=>'PIR Motion A','status'=>1],
+//   ['device_id'=>4,'event_id'=>3,'name'=>'Shock Sensor A','status'=>1],
+// ];
 
-$alarms = [
-  ['alarm_id'=>1,'device_id'=>1,'is_triggered'=>1,'datetime'=>'2025-11-28 09:12:00'],
-  ['alarm_id'=>2,'device_id'=>2,'is_triggered'=>1,'datetime'=>'2025-11-28 09:12:10'],
-  ['alarm_id'=>3,'device_id'=>1,'is_triggered'=>0,'datetime'=>'2025-11-29 10:00:00'],
-];
+// $alarms = [
+//   ['alarm_id'=>1,'device_id'=>1,'is_triggered'=>1,'datetime'=>'2025-11-28 09:12:00'],
+//   ['alarm_id'=>2,'device_id'=>2,'is_triggered'=>1,'datetime'=>'2025-11-28 09:12:10'],
+//   ['alarm_id'=>3,'device_id'=>1,'is_triggered'=>0,'datetime'=>'2025-11-29 10:00:00'],
+// ];
 
-$motions = [
-  ['motion_id'=>1,'device_id'=>3,'is_detected'=>1,'datetime'=>'2025-11-30 16:12:45'],
-];
+// $motions = [
+//   ['motion_id'=>1,'device_id'=>3,'is_detected'=>1,'datetime'=>'2025-11-30 16:12:45'],
+// ];
 
-$shocks = [
-  ['shock_id'=>1,'device_id'=>4,'is_detected'=>0,'datetime'=>'2025-11-30 09:15:00'],
-];
+// $shocks = [
+//   ['shock_id'=>1,'device_id'=>4,'is_detected'=>0,'datetime'=>'2025-11-30 09:15:00'],
+// ];
 
-$notifications = [
-  ['notification_id'=>1,'user_id'=>1,'username'=>'system','message'=>'Alarm triggered at Zone A','created_at'=>'2025-11-28 09:12:12'],
-  ['notification_id'=>2,'user_id'=>2,'username'=>'guard1','message'=>'Motion detected near gate','created_at'=>'2025-11-30 16:13:00'],
-];
+// $notifications = [
+//   ['notification_id'=>1,'user_id'=>1,'username'=>'system','message'=>'Alarm triggered at Zone A','created_at'=>'2025-11-28 09:12:12'],
+//   ['notification_id'=>2,'user_id'=>2,'username'=>'guard1','message'=>'Motion detected near gate','created_at'=>'2025-11-30 16:13:00'],
+// ];
 
-$deviceMap = [];
-foreach ($devices as $d) $deviceMap[$d['device_id']] = $d['name'];
+// $deviceMap = [];
+// foreach ($devices as $d) $deviceMap[$d['device_id']] = $d['name'];
 
-$filter = $_GET['filter'] ?? 'all';
-?>
+// $filter = $_GET['filter'] ?? 'all';
+// ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
