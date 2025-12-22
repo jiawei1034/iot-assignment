@@ -3,23 +3,23 @@
 // -------------------------
 // DATABASE VERSION (ENABLE LATER)
 // -------------------------
-session_start();
-require_once "config.php";
-if (!isset($_SESSION['username'])) {
-    header("Location: index.php");
-    exit;
-}
-date_default_timezone_set('Asia/Kuala_Lumpur');
-$profile_name = $_SESSION['username'];
-$now = new DateTime('now');
-$login_timestamp = $now->format('Y-m-d H:i:s');
-$logo_text = 'IntruderSys';
+// session_start();
+// require_once "db.php";
+// if (!isset($_SESSION['username'])) {
+//     header("Location: index.php");
+//     exit;
+// }
+// date_default_timezone_set('Asia/Kuala_Lumpur');
+// $profile_name = $_SESSION['username'];
+// $now = new DateTime('now');
+// $login_timestamp = $now->format('Y-m-d H:i:s');
+// $logo_text = 'IntruderSys';
 
-$devices = $conn->query("SELECT device_id,event_id,name,status FROM device_list")->fetch_all(MYSQLI_ASSOC);
-$alarms = $conn->query("SELECT alarm_id,device_id,is_triggered,datetime FROM alarm ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
-$motions = $conn->query("SELECT motion_id,device_id,is_detected,datetime FROM motion_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
-$shocks = $conn->query("SELECT shock_id,device_id,is_detected,datetime FROM shock_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
-$notifications = $conn->query("SELECT notification_id,user_id,username,message,created_at FROM notification ORDER BY created_at DESC LIMIT 20")->fetch_all(MYSQLI_ASSOC);
+// $devices = $conn->query("SELECT device_id,event_id,name,status FROM device_list")->fetch_all(MYSQLI_ASSOC);
+// $alarms = $conn->query("SELECT alarm_id,device_id,is_triggered,datetime FROM alarm ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
+// $motions = $conn->query("SELECT motion_id,device_id,is_detected,datetime FROM motion_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
+// $shocks = $conn->query("SELECT shock_id,device_id,is_detected,datetime FROM shock_sensor ORDER BY datetime DESC")->fetch_all(MYSQLI_ASSOC);
+// $notifications = $conn->query("SELECT notification_id,user_id,username,message,created_at FROM notification ORDER BY created_at DESC LIMIT 20")->fetch_all(MYSQLI_ASSOC);
 
 // -------------------------
 // HARDCODED SAMPLE DATA (UI PREVIEW)
