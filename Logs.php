@@ -1,10 +1,9 @@
 <?php
-
+require "config.php";
 // -------------------------
 // DATABASE VERSION (ENABLE LATER)
 // -------------------------
 session_start();
-require_once "config.php";
 if (!isset($_SESSION['username'])) {
     header("Location: index.php");
     exit;
