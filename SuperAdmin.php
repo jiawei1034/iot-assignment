@@ -1249,9 +1249,6 @@ function clearAllNotifications() {
                 <li><a href="#" class="nav-link" data-section="failed-logins">Failed Logins 
                     <span id="failed-login-badge" class="notification-badge" style="display: none;">0</span>
                 </a></li>
-                <li><a href="#" class="nav-link" data-section="notifications">Notifications 
-                    <span id="notification-badge" class="notification-badge" style="display: none;">0</span>
-                </a></li>
                 <li><a href="#" onclick="logout()">Logout</a></li>
             </ul>
         </div>
