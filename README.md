@@ -1,5 +1,4 @@
 # 🔐 Arduino-Based Intruder Detection System 
-Youtube Presentation Link: https://youtu.be/PVPVR_upTAs
 
 A **low-cost intruder detection system** using an **Arduino Uno** for motion and shock sensing, with a **PHP-based web dashboard hosted on AWS EC2** for monitoring, logging, and control.
 
@@ -98,16 +97,22 @@ The system uses a **client–server architecture**:
 ![Login Page Screenshot](images/login_page.png)
 
 **Admin Dashboard Screenshot:**  
-![Dashboard Screenshot](images/dashboard.png)
+![Dashboard Screenshot](images/admin.jpeg)
 
 **Event Log Example:**  
 ![Event Log](images/event.jpeg)
 
 **SuperAdmin Page Screenshot:**  
-![Event Log](images/SuperAdmin.png)
+![Superdmin](images/SuperAdmin.png)
 
 **Hardware Setup Diagram:**  
 ![Hardware Setup](images/hardware.jpeg)
+
+**Arduino Wifi Output:**  
+![Wifi](images/wifi.jpeg)
+
+**Admin Page Chart:**  
+![Admin Page Chart](chart.jpeg)
 
 ---
 
@@ -122,5 +127,7 @@ The system uses a **client–server architecture**:
 
 ## 9. Course Information
 
-**Course:** NET3054  
+**Course:** NET3054
+**Group:** 10  
 **Submission:** December 2025
+**Youtube Presentation URL:** https://youtu.be/PVPVR_upTAs 
