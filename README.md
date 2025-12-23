@@ -111,8 +111,8 @@ The system uses a **client–server architecture**:
 **Arduino Wifi Output:**  
 ![Wifi](images/wifi.jpeg)
 
-**Admin Page Chart:**  
-![Admin Page Chart](chart.jpeg)
+**Api Sent Output:**  
+![API Sent](api_sent.jpeg)
 
 ---
 
