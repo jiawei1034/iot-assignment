@@ -10,7 +10,7 @@ A **low-cost intruder detection system** using an **Arduino Uno** for motion and
 Most commercial security systems are **expensive**, **cloud-dependent**, and can fail during network outages, leaving premises vulnerable.
 
 ### Proposed Solution
-AF-IDS provides a **cost-effective, decentralized solution**. The Arduino node detects **motion (PIR)** and **physical tampering (shock sensor)**, while a **PHP dashboard on AWS EC2** allows real-time monitoring, historical logs, and alarm control without cloud subscriptions.
+The system provides a **cost-effective, decentralized solution**. The Arduino node detects **motion (PIR)** and **physical tampering (shock sensor)**, while a **PHP dashboard on AWS EC2** allows real-time monitoring, historical logs, and alarm control without cloud subscriptions.
 
 **Key Objectives:**
 1. Build Arduino sensor node for motion and shock detection.
