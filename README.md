@@ -1,4 +1,4 @@
-# 🔐 Arduino-Based Intruder Detection System (AF-IDS)
+# 🔐 Arduino-Based Intruder Detection System 
 
 A **low-cost intruder detection system** using an **Arduino Uno** for motion and shock sensing, with a **PHP-based web dashboard hosted on AWS EC2** for monitoring, logging, and control.
 
@@ -29,7 +29,7 @@ The system uses a **client–server architecture**:
 
 **System Diagram:**
 
-![System Architecture](images/system_architecture.png)
+![System Architecture](images/system.png)
 
 
 ---
@@ -39,22 +39,22 @@ The system uses a **client–server architecture**:
 ### Hardware Components
 | Component | Purpose |
 |-----------|--------|
-| Arduino Uno (ATmega328P) | Main controller |
+
+| Arduino Uno | Main controller | 
 | PIR Motion Sensor | Motion detection |
 | Shock Sensor | Detect physical tampering |
-| Relay Module (5V) | Control alarms (siren/LED) |
 | Buzzer | Audible alert |
 | LED | Visual alert |
-| ESP8266 / Wi-Fi Shield | Network communication |
-| Power Supply (5–12V) | System power |
+| Wi-Fi Shield | Network communication |
 
-### Software Components
+
+### Software
 | Software | Purpose |
-|----------|--------|
+|----------|--------| 
 | Arduino IDE | Firmware development |
 | PHP | Backend & web dashboard |
 | HTML / CSS / JavaScript | Dashboard UI |
-| MySQL | Event and user data storage |
+| MySQL  Event and user data storage |
 | Apache / Nginx | Web server on AWS EC2 |
 | bcrypt | Password hashing |
 
@@ -94,24 +94,25 @@ The system uses a **client–server architecture**:
 ---
 
 ## 7. Screenshots, Logs, and Diagrams
+**Login Page Screenshot:**  
+![Login Page Screenshot](images/login_page.png)
 
 **Admin Dashboard Screenshot:**  
-![Dashboard Screenshot](images/dashboard_screenshot.png)
+![Dashboard Screenshot](images/dashboard.png)
 
 **Event Log Example:**  
-![Event Log](images/event_log.png)
+![Event Log](images/event.jpeg)
+
+**SuperAdmin Page Screenshot:**  
+![Event Log](images/SuperAdmin.png)
 
 **Hardware Setup Diagram:**  
-![Hardware Setup](images/hardware_setup.png)
-
-**Sensor Wiring Diagram:**  
-![Sensor Wiring](images/sensor_wiring.png)
+![Hardware Setup](images/hardware.jpeg)
 
 ---
 
 ## 8. Future Improvements
 
-- Implement **HTTPS** for secure connections
 - Add **mobile-friendly dashboard**
 - Enable **push notifications (SMS/Email)**
 - Introduce **role-based access control (RBAC)**
@@ -122,5 +123,4 @@ The system uses a **client–server architecture**:
 ## 9. Course Information
 
 **Course:** NET3054  
-**Group:** Group 10  
-**Submission:** September 2025
+**Submission:** December 2025
