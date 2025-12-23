@@ -39,7 +39,6 @@ The system uses a **client–server architecture**:
 ### Hardware Components
 | Component | Purpose |
 |-----------|--------|
-
 | Arduino Uno | Main controller | 
 | PIR Motion Sensor | Motion detection |
 | Shock Sensor | Detect physical tampering |
