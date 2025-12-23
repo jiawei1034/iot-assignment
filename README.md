@@ -4,84 +4,122 @@ A **low-cost intruder detection system** using an **Arduino Uno** for motion and
 
 ---
 
-## 1. Project Overview & Motivation
+## 1. Project Overview and Motivation
 
 ### Problem Statement
-Commercial security systems are often **expensive** and **cloud-dependent**, making them unsuitable for small businesses and homes. They can fail during internet outages, leaving premises unprotected.
+Most commercial security systems are **expensive**, **cloud-dependent**, and can fail during network outages, leaving premises vulnerable.
 
 ### Proposed Solution
-AF-IDS provides a **cost-effective, decentralized solution**. The Arduino edge node detects motion and tampering locally, while a PHP-based dashboard hosted on AWS EC2 allows **real-time monitoring, logging, and control** without relying on paid cloud subscriptions.
+AF-IDS provides a **cost-effective, decentralized solution**. The Arduino node detects **motion (PIR)** and **physical tampering (shock sensor)**, while a **PHP dashboard on AWS EC2** allows real-time monitoring, historical logs, and alarm control without cloud subscriptions.
+
+**Key Objectives:**
+1. Build Arduino sensor node for motion and shock detection.
+2. Deploy PHP-based web dashboard for monitoring and control.
+3. Implement security measures including authentication, password hashing, and intrusion detection.
 
 ---
 
-## 2. Project Objectives
+## 2. Complete System Architecture
 
-1. Develop an Arduino node to detect **motion (PIR)** and **physical impact (shock sensors)**.
-2. Create a **PHP-based admin dashboard** for monitoring, historical logs, and alarm control.
-3. Implement **basic security measures**, including authentication, password hashing, and intrusion detection.
+The system uses a **client–server architecture**:
 
----
+- **Arduino Edge Node**: Reads sensors, triggers alarms, sends events via HTTP.
+- **AWS EC2 Server**: Hosts PHP backend and MySQL database.
+- **Admin Dashboard**: Displays events, alerts, logs, and controls alarms.
 
-## 3. System Architecture
+**System Diagram:**
 
-- **Arduino Edge Node**: Reads sensor data, triggers local alarms (buzzer, LED, relay), sends events to server.
-- **AWS EC2 Server**: Hosts PHP backend and MySQL database, manages the dashboard.
-- **Admin Dashboard**: Displays real-time events, alerts, and allows remote alarm control.
-
-![System Architecture](images/system.png)
+![System Architecture](images/system_architecture.png)
 
 
 ---
 
-## 4. Hardware & Software
+## 3. Hardware and Software Setup
 
-### Hardware
-- Arduino Uno (ATmega328P)
-- PIR Motion Sensor
-- Shock Sensor
-- 5V Relay Module
-- Buzzer & LED
-- ESP8266 / Wi-Fi Shield
-- Power Supply (5–12V)
+### Hardware Components
+| Component | Purpose |
+|-----------|--------|
+| Arduino Uno (ATmega328P) | Main controller |
+| PIR Motion Sensor | Motion detection |
+| Shock Sensor | Detect physical tampering |
+| Relay Module (5V) | Control alarms (siren/LED) |
+| Buzzer | Audible alert |
+| LED | Visual alert |
+| ESP8266 / Wi-Fi Shield | Network communication |
+| Power Supply (5–12V) | System power |
 
-### Software
-- Arduino IDE
-- PHP (backend & dashboard)
-- HTML / CSS / JavaScript
-- MySQL
-- Apache / Nginx (AWS EC2)
-- bcrypt (password hashing)
+### Software Components
+| Software | Purpose |
+|----------|--------|
+| Arduino IDE | Firmware development |
+| PHP | Backend & web dashboard |
+| HTML / CSS / JavaScript | Dashboard UI |
+| MySQL | Event and user data storage |
+| Apache / Nginx | Web server on AWS EC2 |
+| bcrypt | Password hashing |
+
+---
+
+## 4. Networking Protocol Design
+
+- **Protocol:** HTTP REST API
+- **Communication:** Arduino nodes → server for event upload; server → nodes for alarm control
+- **Topology:** Multiple Arduino nodes → single centralized AWS EC2 server
 
 ---
 
 ## 5. Security Implementation
 
-- **Authentication**: Passwords hashed with PHP `password_hash()` (bcrypt)
-- **Session Management**: Server-side sessions with regenerated session IDs
-- **Intrusion Detection**: Multiple failed login attempts trigger account lockout, alerts displayed on dashboard
+- **Authentication:** Passwords hashed using PHP `password_hash()` (bcrypt)
+- **Session Management:** Server-side sessions with regenerated session IDs
+- **Intrusion Detection:** Accounts locked after 3 failed login attempts; alerts displayed on the dashboard
+- **Local Alarms:** Immediate response to sensor triggers (buzzer/LED/relay)
 
 ---
 
-## 6. Expected Outcomes
+## 6. Testing Evidence and Results
 
-- Real-time detection of motion and tampering
-- Immediate local alarms (sound and light)
-- Secure web-based monitoring dashboard
-- Historical event logs
-- Cost-effective alternative to cloud-based systems
+- **Test 1:** PIR motion detection
+  - Triggered alarm and logged event successfully
+- **Test 2:** Shock sensor detection
+  - Triggered alarm and logged event successfully
+- **Test 3:** Failed login attempt handling
+  - Account locked after 3 failed attempts; alert displayed
 
----
-
-## 7. Future Improvements
-
-- HTTPS for secure connections
-- Mobile-friendly dashboard
-- Push notifications for alerts
-- Role-based access control
+**Results:**
+- Real-time detection is functional
+- Logs are accurately stored in the database
+- Admin dashboard displays events correctly
 
 ---
 
-## 8. Course Information
+## 7. Screenshots, Logs, and Diagrams
+
+**Admin Dashboard Screenshot:**  
+![Dashboard Screenshot](images/dashboard_screenshot.png)
+
+**Event Log Example:**  
+![Event Log](images/event_log.png)
+
+**Hardware Setup Diagram:**  
+![Hardware Setup](images/hardware_setup.png)
+
+**Sensor Wiring Diagram:**  
+![Sensor Wiring](images/sensor_wiring.png)
+
+---
+
+## 8. Future Improvements
+
+- Implement **HTTPS** for secure connections
+- Add **mobile-friendly dashboard**
+- Enable **push notifications (SMS/Email)**
+- Introduce **role-based access control (RBAC)**
+- Support **MQTT protocol** for multiple node scalability
+
+---
+
+## 9. Course Information
 
 **Course:** NET3054  
 **Group:** Group 10  
