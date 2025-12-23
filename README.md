@@ -54,7 +54,7 @@ The system uses a **client–server architecture**:
 | Arduino IDE | Firmware development |
 | PHP | Backend & web dashboard |
 | HTML / CSS / JavaScript | Dashboard UI |
-| MySQL  Event and user data storage |
+| MySQL | Event and user data storage |
 | Apache / Nginx | Web server on AWS EC2 |
 | bcrypt | Password hashing |
 
