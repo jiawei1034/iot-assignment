@@ -108,11 +108,8 @@ The system uses a **client–server architecture**:
 **Hardware Setup Diagram:**  
 ![Hardware Setup](images/hardware.jpeg)
 
-**Arduino Wifi Output:**  
+**Arduino Output:**  
 ![Wifi](images/wifi.jpeg)
-
-**Api Sent Output:**  
-![API Sent](api_sent.jpeg)
 
 ---
 
